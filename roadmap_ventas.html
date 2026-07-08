@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Roadmap Área de Ventas</title>
+<style>
+  :root{
+    --bg:#F5F8FC; --card:#ffffff; --border:#E9EFFB; --border-strong:#C6D6F7;
+    --text:#0C1E43; --text-secondary:#454F96; --text-muted:#858CC2;
+    --blue:#2864EB; --blue-bg:#E9EFFB; --blue-line:#C6D6F7;
+    --green:#00AA8C; --green-bg:#F1FFFD; --green-line:#8FE0D3;
+    --navy:#0C1E43; --navy-bg:#E9EFFB;
+    --amber:#847A13; --amber-bg:#FEFCC4;
+    --danger:#B00000; --danger-bg:#FFE8E8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0C1E43; --card:#12285a; --border:#22346b; --border-strong:#3a4c8a;
+      --text:#F5F8FC; --text-secondary:#C6D6F7; --text-muted:#858CC2;
+      --blue:#7ea3f5; --blue-bg:#1c2e63; --blue-line:#2864EB;
+      --green:#5ddac2; --green-bg:#0f3d34; --green-line:#00AA8C;
+      --navy:#F5F8FC; --navy-bg:#1c2e63;
+      --amber:#e8d76a; --amber-bg:#3a3410;
+      --danger:#f0958a; --danger-bg:#4e1f19;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Rubik','Nunito Sans',-apple-system,Helvetica,Arial,sans-serif;padding:28px 20px;line-height:1.5}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-size:22px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em;color:var(--navy)}
+  .sub{font-size:13px;color:var(--text-muted);margin:0 0 4px}
+  .savestatus{font-size:12px;margin:0 0 20px;min-height:16px;font-weight:500}
+  .savestatus.ok{color:var(--green)}
+  .savestatus.err{color:var(--danger)}
+  .section-title{display:flex;align-items:center;gap:8px;margin:0 0 14px}
+  .section-title .chip{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+  .section-title h2{font-size:14px;font-weight:700;margin:0;color:var(--navy)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:22px;box-shadow:0 1px 3px rgba(40,100,235,.06)}
+
+  .monthtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+  .monthtab{padding:7px 16px;border-radius:20px;border:1px solid var(--border-strong);background:var(--card);font-size:13px;font-weight:600;cursor:pointer;color:var(--text-secondary)}
+  .monthtab.active{background:var(--blue);border-color:var(--blue);color:#fff}
+
+  .roadmaptext{width:100%;min-height:60px;resize:vertical;border:1px solid var(--border);border-radius:10px;background:var(--blue-bg);color:var(--text);font-size:13px;font-family:inherit;padding:10px 12px;outline:none;line-height:1.5}
+
+  .weektabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+  .weektab{padding:6px 12px;border-radius:20px;border:1px solid var(--border-strong);background:var(--card);font-size:12px;cursor:pointer;color:var(--text-secondary)}
+  .weektab.active{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+  .weektab.add{background:transparent;border-style:dashed;color:var(--text-muted)}
+
+  .weeklabel{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .weeklabel input{font-size:15px;font-weight:700;border:none;background:transparent;color:var(--text);outline:none;flex:1;padding:2px 0;border-bottom:1px dashed transparent}
+  .weeklabel input:focus{border-bottom-color:var(--border-strong)}
+  .weeklabel button{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:12px}
+  .weeklabel button:hover{color:var(--danger)}
+
+  .bar{display:flex;height:30px;border-radius:9px;overflow:hidden;border:1px solid var(--border)}
+  .seg{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;transition:width .25s;position:relative}
+  .legend{display:flex;gap:18px;font-size:11px;color:var(--text-muted);margin-top:8px;flex-wrap:wrap}
+  .dot{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:middle}
+
+  .row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+  .row:last-child{border-bottom:none}
+  .row input[type=checkbox]{width:17px;height:17px;accent-color:var(--green);flex-shrink:0;cursor:pointer}
+  .row span{flex:1;font-size:13px}
+  .row.done span{text-decoration:line-through;color:var(--text-muted)}
+  .row button{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:2px 6px}
+  .row button:hover{color:var(--danger)}
+
+  .additem{display:flex;gap:6px;margin-top:10px}
+  .additem input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:13px}
+  .additem button{padding:8px 16px;border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:600;cursor:pointer}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .item-tag{font-size:12px;padding:8px 10px;border-radius:8px;margin-bottom:7px;display:flex;justify-content:space-between;gap:6px}
+  .item-tag button{background:none;border:none;color:inherit;opacity:.55;cursor:pointer;font-size:13px;flex-shrink:0}
+  .item-tag button:hover{opacity:1}
+  .hint{font-size:11px;color:var(--text-muted);margin:0 0 10px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p class="hint">Cargando...</p></div>
+
+<script>
+const MONTH_NAMES = ['Jul','Ago','Sep','Oct','Nov','Dic'];
+const MAX_IMPREVISTOS = 4;
+
+function newWeek(id) { return { id, label: 'Semana ' + id, tasks: [], imprevistos: [] }; }
+function newMonth(name) {
+  return { name, roadmapText: '', weeks: [newWeek(1)], activeWeek: 1, nextWeekId: 2 };
+}
+
+let data = {
+  months: MONTH_NAMES.map(newMonth),
+  activeMonth: 0,
+  captures: []
+};
+let saveState = 'idle';
+
+const STORAGE_KEY = 'roadmap-ventas-data-v2';
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) data = JSON.parse(raw);
+  } catch (e) {}
+  render();
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    saveState = 'ok';
+  } catch (e) {
+    console.error('No se pudo guardar', e);
+    saveState = 'err';
+  }
+  renderSaveStatus();
+}
+
+function renderSaveStatus() {
+  const el = document.getElementById('savestatus');
+  if (!el) return;
+  if (saveState === 'ok') { el.textContent = '✓ guardado en este navegador'; el.className = 'savestatus ok'; }
+  else if (saveState === 'err') { el.textContent = '⚠ no se pudo guardar — revisá que el navegador no tenga bloqueado el almacenamiento local'; el.className = 'savestatus err'; }
+  else { el.textContent = ''; el.className = 'savestatus'; }
+}
+
+function currentMonth() { return data.months[data.activeMonth]; }
+function currentWeek() {
+  const m = currentMonth();
+  return m.weeks.find(w => w.id === m.activeWeek) || m.weeks[0];
+}
+
+function render() {
+  const app = document.getElementById('app');
+  const month = currentMonth();
+  const week = currentWeek();
+  const doneCount = week.tasks.filter(t => t.done).length;
+  const totalTasks = week.tasks.length;
+  const plannedMaxPct = 55;
+  const plannedFillPct = totalTasks ? (doneCount / totalTasks * 100) : 0;
+  const imprevCount = week.imprevistos.length;
+  const overflow = imprevCount > MAX_IMPREVISTOS;
+  const freePct = Math.max(100 - plannedMaxPct - 25, 0);
+
+  app.innerHTML = `
+    <h1>Roadmap — área de ventas</h1>
+    <p class="sub">Julio a diciembre 2026</p>
+    <p class="savestatus" id="savestatus"></p>
+
+    <div class="card">
+      <div class="section-title"><span class="chip" style="background:var(--blue)"></span><h2>Elegí el mes</h2></div>
+      <div class="monthtabs">
+        ${data.months.map((m, i) => `<div class="monthtab ${i === data.activeMonth ? 'active' : ''}" onclick="selectMonth(${i})">${m.name}</div>`).join('')}
+      </div>
+      <textarea class="roadmaptext" data-month-text placeholder="qué querés lograr este mes...">${month.roadmapText}</textarea>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><span class="chip" style="background:var(--green)"></span><h2>Semanas de ${month.name}</h2></div>
+      <div class="weektabs">
+        ${month.weeks.map(w => `<div class="weektab ${w.id === month.activeWeek ? 'active' : ''}" onclick="selectWeek(${w.id})">${w.label}</div>`).join('')}
+        <div class="weektab add" onclick="addWeek()">+ nueva semana</div>
+      </div>
+
+      <div class="weeklabel">
+        <input value="${week.label}" onchange="renameWeek(this.value)">
+        ${month.weeks.length > 1 ? `<button onclick="deleteWeek()">borrar semana</button>` : ''}
+      </div>
+
+      <div class="bar">
+        <div class="seg" style="width:${plannedMaxPct}%;background:var(--green-bg);color:var(--green)">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:${plannedFillPct}%;background:var(--green-line);opacity:.6"></div>
+          <span style="position:relative">Sprint ${doneCount}/${totalTasks}</span>
+        </div>
+        <div class="seg" style="width:25%;background:${overflow ? 'var(--danger-bg)' : 'var(--blue-bg)'};color:${overflow ? 'var(--danger)' : 'var(--blue)'}">
+          Imprevistos ${imprevCount}${overflow ? ' ¡excedido!' : '/' + MAX_IMPREVISTOS}
+        </div>
+        <div class="seg" style="width:${freePct}%;background:var(--bg);color:var(--text-muted);border-left:1px dashed var(--border-strong)">margen</div>
+      </div>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--green-line)"></span>avance del sprint</span>
+        <span><span class="dot" style="background:${overflow ? 'var(--danger)' : 'var(--blue)'}"></span>pedidos de la diaria</span>
+        <span><span class="dot" style="background:var(--border-strong)"></span>margen libre</span>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="card">
+        <div class="section-title"><span class="chip" style="background:var(--green)"></span><h2>Sprint de ${week.label}</h2></div>
+        ${week.tasks.map((t, i) => `
+          <div class="row ${t.done ? 'done' : ''}">
+            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTask(${i})">
+            <span>${t.text}</span>
+            <button onclick="removeTask(${i})">✕</button>
+          </div>
+        `).join('') || '<p class="hint">Sin tareas todavía.</p>'}
+        <div class="additem">
+          <input id="newtask" type="text" placeholder="nueva tarea del sprint..." onkeydown="if(event.key==='Enter')addTask()">
+          <button style="background:var(--green)" onclick="addTask()">Agregar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><span class="chip" style="background:var(--amber)"></span><h2>Lista de captura</h2></div>
+        <p class="hint">Ideas que surgen mientras trabajás en algo puntual (backlog general)</p>
+        ${data.captures.map((c, i) => `
+          <div class="item-tag" style="background:var(--amber-bg);color:var(--amber)"><span>${c}</span><button onclick="removeCapture(${i})">✕</button></div>
+        `).join('') || '<p class="hint">Vacía por ahora.</p>'}
+        <div class="additem">
+          <input id="newcapture" type="text" placeholder="algo que se te ocurrió..." onkeydown="if(event.key==='Enter')addCapture()">
+          <button style="background:var(--amber)" onclick="addCapture()">Sumar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><span class="chip" style="background:var(--blue)"></span><h2>Imprevistos de ${week.label}</h2></div>
+      <p class="hint">Pedidos de la diaria — consume el margen de la barrita de arriba</p>
+      ${week.imprevistos.map((c, i) => `
+        <div class="item-tag" style="background:var(--blue-bg);color:var(--blue)"><span>${c}</span><button onclick="removeImprevisto(${i})">✕</button></div>
+      `).join('') || '<p class="hint">Vacía por ahora.</p>'}
+      <div class="additem">
+        <input id="newimprevisto" type="text" placeholder="algo que te pidieron ahora..." onkeydown="if(event.key==='Enter')addImprevisto()">
+        <button style="background:var(--blue)" onclick="addImprevisto()">Sumar</button>
+      </div>
+    </div>
+  `;
+
+  const rt = app.querySelector('[data-month-text]');
+  rt.addEventListener('input', () => { month.roadmapText = rt.value; save(); });
+  renderSaveStatus();
+}
+
+function selectMonth(i) { data.activeMonth = i; save(); render(); }
+function selectWeek(id) { currentMonth().activeWeek = id; save(); render(); }
+function addWeek() {
+  const m = currentMonth();
+  const id = m.nextWeekId++;
+  m.weeks.push(newWeek(id));
+  m.activeWeek = id;
+  save(); render();
+}
+function renameWeek(val) { currentWeek().label = val.trim() || currentWeek().label; save(); render(); }
+function deleteWeek() {
+  const m = currentMonth();
+  m.weeks = m.weeks.filter(w => w.id !== m.activeWeek);
+  m.activeWeek = m.weeks[0].id;
+  save(); render();
+}
+
+function addTask() {
+  const el = document.getElementById('newtask');
+  if (el.value.trim()) { currentWeek().tasks.push({text: el.value.trim(), done: false}); save(); render(); }
+}
+function toggleTask(i) { currentWeek().tasks[i].done = !currentWeek().tasks[i].done; save(); render(); }
+function removeTask(i) { currentWeek().tasks.splice(i, 1); save(); render(); }
+
+function addCapture() {
+  const el = document.getElementById('newcapture');
+  if (el.value.trim()) { data.captures.push(el.value.trim()); save(); render(); }
+}
+function removeCapture(i) { data.captures.splice(i, 1); save(); render(); }
+
+function addImprevisto() {
+  const el = document.getElementById('newimprevisto');
+  if (el.value.trim()) { currentWeek().imprevistos.push(el.value.trim()); save(); render(); }
+}
+function removeImprevisto(i) { currentWeek().imprevistos.splice(i, 1); save(); render(); }
+
+load();
+</script>
+</body>
+</html>
